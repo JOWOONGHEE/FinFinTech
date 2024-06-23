@@ -1,4 +1,4 @@
-#finfintech
+# finfintech
 
 ## 프로젝트 개요
 **finfintech**는 핀테크 관련 기능을 제공하는 애플리케이션입니다. 
