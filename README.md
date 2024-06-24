@@ -7,7 +7,7 @@
 ## 주요 기능
 
 + **회원가입 기능**
-  + ID **(e-mail)**, PASSWORD, 이름, 생년월일, 전화번호를 입력하여 회원가입 가능
+  + ID, PASSWORD, email, 이름, 생년월일, 전화번호를 입력하여 회원가입 가능
   + ID 중복 불가
   + PASSWORD는 bcrypt로 해싱해서 저장
     
