@@ -64,3 +64,6 @@
 + 송금 이력 조회
     GET /transfer/history
 
+
+## ERD
+![image](assets/erd.png)
