@@ -104,4 +104,4 @@
 + 투자 이력 조회 GET /investment/history
 
 ## ERD
-![image](assets/erd.png)
+![image](assets/ERD.png)
