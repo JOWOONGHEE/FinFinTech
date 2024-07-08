@@ -1,37 +1,71 @@
 package com.fin.finfintech.entity;
 
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "users")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class User {
+@Data
+@Entity
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    private Long id; //아이디
 
-    @Column(name = "password", nullable = false, length = 255)
-    private String password;
+    private String username; //회원 이름
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    private String password; //비밀번호
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    private String email; // 이메일
 
-    @Column(name = "birthdate", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date birthdate;
+    private Date birthdate; //생년월일
 
-    @Column(name = "phone", nullable = false, length = 20)
-    private String phone;
+    private String phoneNumber; //전화번호
 
+//    private List<String> roles; //권한
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
+
