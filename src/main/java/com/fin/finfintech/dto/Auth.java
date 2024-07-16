@@ -1,14 +1,19 @@
 package com.fin.finfintech.dto;
 
 
-import com.fin.finfintech.entity.User;
+import com.fin.finfintech.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 public class Auth {
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class SignIn {
         private String email;
         private String password;
@@ -16,6 +21,9 @@ public class Auth {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class SignUp {
         private String email;
         private String password;
