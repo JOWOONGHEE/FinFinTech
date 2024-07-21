@@ -8,6 +8,7 @@ import com.fin.finfintech.exception.AccountException;
 import com.fin.finfintech.service.AccountService;
 import com.fin.finfintech.security.TokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fin.finfintech.service.UserService;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AccountController.class)
 @WithMockUser(roles = "USER")
 class AccountControllerTest {
+
     @MockBean
     private AccountService accountService;
 
@@ -52,22 +54,14 @@ class AccountControllerTest {
 
     @BeforeEach
     void setUp() {
-        // TokenProvider가 null인지 확인
-        if (tokenProvider == null) {
-            System.out.println("TokenProvider is null");
-        } else {
-            // Token 생성 시도
-            String generatedToken = tokenProvider.generateToken("test@test.com");
-            if (generatedToken == null) {
-                System.out.println("Generated token is null");
-            } else {
-                token = "Bearer " + generatedToken;
-            }
-        }
+        // TokenProvider의 동작을 모킹
+        given(tokenProvider.generateToken(anyString())).willReturn("mocked-token");
+
+        // Token 생성 시도
+        token = "Bearer " + tokenProvider.generateToken("test@test.com");
+
         System.out.println("Generated token: " + token);
     }
-
-
 
     @Test
     void successCreateAccount() throws Exception {
@@ -84,11 +78,12 @@ class AccountControllerTest {
         mockMvc.perform(post("/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token) // 토큰 추가
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(
                                 new CreateAccount.Request(333L, 100L)
                         )))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value("1L"))
+                .andExpect(jsonPath("$.userId").value(1L))
                 .andExpect(jsonPath("$.accountNumber").value("1234567890"))
                 .andDo(print());
     }
@@ -108,11 +103,12 @@ class AccountControllerTest {
         mockMvc.perform(delete("/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token) // 토큰 추가
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(
                                 new DeleteAccount.Request(333L, "1234567890")
                         )))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value("1L"))
+                .andExpect(jsonPath("$.userId").value(1L))
                 .andExpect(jsonPath("$.accountNumber").value("1234567890"))
                 .andDo(print());
     }
@@ -138,14 +134,14 @@ class AccountControllerTest {
         //then
         mockMvc.perform(get("/account?user_id=1")
                         .header("Authorization", token)) // 토큰 추가
-                        .andDo(print())
-                        .andExpect(jsonPath("$[0].accountNumber").value("1234567890"))
-                        .andExpect(jsonPath("$[0].balance").value("100"))
-                        .andExpect(jsonPath("$[1].accountNumber").value("1234567800"))
-                        .andExpect(jsonPath("$[1].balance").value("1000"))
-                        .andExpect(jsonPath("$[2].accountNumber").value("1234567000"))
-                        .andExpect(jsonPath("$[2].balance").value("10000"))
-                        .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(jsonPath("$[0].accountNumber").value("1234567890"))
+                .andExpect(jsonPath("$[0].balance").value(100))
+                .andExpect(jsonPath("$[1].accountNumber").value("1234567800"))
+                .andExpect(jsonPath("$[1].balance").value(1000))
+                .andExpect(jsonPath("$[2].accountNumber").value("1234567000"))
+                .andExpect(jsonPath("$[2].balance").value(10000))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -157,10 +153,11 @@ class AccountControllerTest {
         //when
         //then
         mockMvc.perform(get("/account?user_id=1")
-                        .header("Authorization", token)) // 토큰 추가
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.errorCode").value("ACCOUNT_NOT_FOUND"))
-                        .andExpect(jsonPath("$.errorMessage").value(ACCOUNT_NOT_FOUND.getDescription()));
+                        .header("Authorization", token)
+                        .with(csrf())) // 토큰 추가
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errorCode").value("ACCOUNT_NOT_FOUND"))
+                .andExpect(jsonPath("$.errorMessage").value(ACCOUNT_NOT_FOUND.getDescription()));
     }
 }

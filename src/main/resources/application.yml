@@ -23,4 +23,3 @@ spring:
 
   jwt:
     secret: ZmluZmludGVjaC1zcHJpbmctYm9vdCBwcm9qZWN0
-

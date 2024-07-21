@@ -4,6 +4,7 @@ import com.fin.finfintech.domain.Account;
 import com.fin.finfintech.domain.AccountUser;
 import com.fin.finfintech.domain.Transaction;
 import com.fin.finfintech.dto.TransactionDto;
+import com.fin.finfintech.dto.TransferDto;
 import com.fin.finfintech.exception.AccountException;
 import com.fin.finfintech.repository.AccountRepository;
 import com.fin.finfintech.repository.AccountUserRepository;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Transfer {
+public class AutoTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,4 +27,9 @@ public class Transfer {
     private Long amount;
     private String memo;
     private LocalDateTime transferDate;
+
+    private LocalDateTime scheduleStartDateTime;
+    private String frequency;
+
+    // 추가적으로 필요한 필드나 메서드가 있다면 여기에 추가
 }

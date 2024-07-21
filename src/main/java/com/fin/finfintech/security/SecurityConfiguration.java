@@ -29,8 +29,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/account", "/account/**",
-                                "/transaction/**", "/transfer")
+                        .requestMatchers("/", "/auth/**", "/account", "/account/**",
+                                "/transaction/**", "/transfer", "/autotransfer",
+                                "/investment/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
@@ -40,18 +41,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-//    @Override
-//    public void configure(final WebSecurity web) throws Exception {
-//        web.ignoring()
-//                .requestMatchers("/h2-console/**");
-//    }
-//
-//    // spring boot 2.x
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
 
 }
 
