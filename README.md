@@ -16,6 +16,11 @@
     + ID, PASSWORD를 입력하여 로그인
     + 로그인시 회원가입에서 생성한 ID와 PASSWORD가 일치 해야함
 
++ **거래 기능**
+    + 계좌 생성 후 거래 가능
+    + 거래 내역 조회 
+    + 입금, 출금
+   
 + **계좌 관리 기능**
     + 계좌 생성
     + 계좌 삭제
@@ -84,6 +89,17 @@
 + 금액 입금
   POST /account/{accountId}/deposit
 
+### 거래 기능
++ 거래
+  POST /transaction/use
++ 거래 취소
+  POST /transaction/cancel/{transactionId}
++ 거래 조회
+  GET /transaction/{transactionId}
++ 입금
+  POST /transaction/deposit
++ 출금
+  POST /transaction/withdraw
 ### 송금 기능 및 이력 조회
 + 송금 기능
   POST /transfer
